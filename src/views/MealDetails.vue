@@ -12,13 +12,22 @@ onMounted(async () => {
 })
 
 const keyIngredients = computed(() => {
-  const ingredients = Object.values(meal.value)
-  return ingredients.filter((ingredient) => ingredient && ingredient.trim() !== '')
+  const ingredientArray = []
+  for (let i = 1; i <= 20; i++) {
+    const ingredientKey = `strIngredient${i}`
+    const measureKey = `strMeasure${i}`
+    const ingredient = meal.value[ingredientKey]?.trim()
+    const measure = meal.value[measureKey]?.trim()
+    if (ingredient) {
+      ingredientArray.push({ ingredient, measure })
+    }
+  }
+  return ingredientArray
 })
 </script>
 
 <template>
-  <div class="p-10 max-w-[800px]">
+  <div class="p-8 max-w-[800px] mx-auto">
     <h1 class="text-5xl font-bold mb-5">
       {{ meal.strMeal }}
     </h1>
@@ -35,8 +44,11 @@ const keyIngredients = computed(() => {
     <div class="grid grid-cols-1 sm:grids-cols-3 gap-5 p-5">
       <div>
         <h2 class="text-2xl mb-2 font-semibold">Ingredients</h2>
-        <ul class="grid grid-cols-2 sm:grids-cols-3">
-          <li v-for="(item, index) in keyIngredients" :key="index">{{ index + 1 }} . {{ item }}</li>
+        <ul>
+          <li v-for="(item, index) in keyIngredients" :key="index" class="grid grid-cols-2">
+            <div>{{ index + 1 }} . {{ item.ingredient }}</div>
+            <div><span class="font-semibold">Measures:</span> {{ item.measure }}</div>
+          </li>
         </ul>
       </div>
     </div>

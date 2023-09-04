@@ -19,6 +19,11 @@ onMounted(async () => {
 const searchMeals = async () => {
   await store.dispatch('searchMeals', keyword.value)
 }
+
+const clearKeyword = async () => {
+  keyword.value = ''
+  await store.dispatch('searchMeals', keyword.value)
+}
 </script>
 
 <template>
@@ -27,9 +32,21 @@ const searchMeals = async () => {
       type="text"
       class="rounded border-2 border-gray-200 w-full"
       v-model="keyword"
-      @change="searchMeals"
       placeholder="Search for meals"
     />
+    <button
+      class="p-2 px-3 rounded border-2 border-red-600 bg-red-500 hover:bg-red-700 text-white transition-colors"
+      @click="searchMeals"
+    >
+      Search
+    </button>
+    <button
+      class="ml-1 p-2 rounded border-2 border-red-600 hover:bg-red-700 text-red-600 hover:text-white transition-colors"
+      @click="clearKeyword"
+      v-show="keyword.length"
+    >
+      x
+    </button>
   </div>
   <MealList :meals="meals" />
 </template>
